@@ -1,48 +1,43 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.maven.apt;
 
 import java.io.File;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
-/**
- * TestAnnotationProcessorMojo calls APT processors for code generation
- * 
- * @goal test-process
- * @phase generate-test-sources
- * @requiresDependencyResolution test
- * @threadSafe true
- */
+@Mojo(name = "test-process", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.TEST)
 public class TestAnnotationProcessorMojo extends AbstractProcessorMojo {
 
-    /**
-     * @parameter
-     */
-    private File outputDirectory;
+  @Parameter
+  private File outputDirectory;
+  @Parameter
+  private File testOutputDirectory;
 
-    /**
-     * @parameter
-     */
-    private File testOutputDirectory;
-  
-    @Override
-    public File getOutputDirectory() {
-        return testOutputDirectory != null ? testOutputDirectory : outputDirectory;
-    }
+  @Override
+  public File getOutputDirectory () {
 
-    @Override
-    protected boolean isForTest(){
-        return true;
-    }
+    return testOutputDirectory != null ? testOutputDirectory : outputDirectory;
+  }
 
-    public void setOutputDirectory(File outputDirectory) {
-        this.outputDirectory = outputDirectory;
-    }
+  public void setOutputDirectory (File outputDirectory) {
 
-    public void setTestOutputDirectory(File testOutputDirectory) {
-        this.testOutputDirectory = testOutputDirectory;
-    }
-    
+    this.outputDirectory = outputDirectory;
+  }
+
+  @Override
+  protected boolean isForTest () {
+
+    return true;
+  }
+
+  public void setTestOutputDirectory (File testOutputDirectory) {
+
+    this.testOutputDirectory = testOutputDirectory;
+  }
 }
