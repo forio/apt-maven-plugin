@@ -23,24 +23,25 @@ public class TestAnnotationProcessorMojoTest {
   public void Execute () throws Exception {
 
     File outputDir = new File("target/generated-test-sources/java");
-    Log log = EasyMock.createMock(Log.class);
+//    Log log = EasyMock.createMock(Log.class);
     BuildContext buildContext = new DefaultBuildContext();
-    MavenProject project = EasyMock.createMock(MavenProject.class);
+    MavenProject project = new MavenProject();
+//    MavenProject project = EasyMock.createMock(MavenProject.class);
     List sourceRoots = Lists.newArrayList("src/test/resources/project-to-test/src/test/java");
     URLClassLoader loader = (URLClassLoader)Thread.currentThread().getContextClassLoader();
     List classpath = ClassPathUtils.getClassPath(loader);
-    EasyMock.expect(project.getTestCompileSourceRoots()).andReturn(sourceRoots);
-    EasyMock.expect(project.getTestCompileSourceRoots()).andReturn(sourceRoots);
-    EasyMock.expect(project.getTestClasspathElements()).andReturn(classpath);
+//    EasyMock.expect(project.getTestCompileSourceRoots()).andReturn(sourceRoots);
+//    EasyMock.expect(project.getTestCompileSourceRoots()).andReturn(sourceRoots);
+//    EasyMock.expect(project.getTestClasspathElements()).andReturn(classpath);
     project.addTestCompileSourceRoot(outputDir.getAbsolutePath());
-    EasyMock.expectLastCall();
-    EasyMock.replay(project);
+//    EasyMock.expectLastCall();
+//    EasyMock.replay(project);
 
     TestAnnotationProcessorMojo mojo = new TestAnnotationProcessorMojo();
     mojo.setBuildContext(buildContext);
     mojo.setCompilerOptions(Maps.<String, String>newHashMap());
     mojo.setIncludes(Sets.<String>newHashSet());
-    mojo.setLog(log);
+//    mojo.setLog(log);
     mojo.setLogOnlyOnError(false);
     mojo.setOptions(Maps.<String, String>newHashMap());
     mojo.setProcessor(QuerydslAnnotationProcessor.class.getName());
@@ -49,7 +50,7 @@ public class TestAnnotationProcessorMojoTest {
     mojo.setOutputDirectory(outputDir);
     mojo.execute();
 
-    EasyMock.verify(project);
+//    EasyMock.verify(project);
 
     assertTrue(new File(outputDir, "com/example/QEntity2.java").exists());
   }

@@ -5,10 +5,12 @@
  */
 package com.mysema.maven.apt;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -20,18 +22,26 @@ public class AddTestCompileSourceRootMojo extends AbstractMojo {
   @Parameter(readonly = true, property = "project")
   private MavenProject project;
   @Parameter
-  private File outputDirectory;
+  private String outputDirectory;
   @Parameter
-  private File testOutputDirectory;
+  private String testOutputDirectory;
 
   @Override
-  public void execute () throws MojoExecutionException, MojoFailureException {
+  public void execute ()
+    throws MojoExecutionException {
 
-    File directory = testOutputDirectory != null ? testOutputDirectory : outputDirectory;
-    if (!directory.exists()) {
-      directory.mkdirs();
+    String directory = testOutputDirectory != null ? testOutputDirectory : outputDirectory;
+    Path path = Paths.get(project.getBuild().getDirectory(), directory);
+
+    try {
+      if (!Files.exists(path)) {
+        Files.createDirectories(path);
+      }
+    } catch (IOException ioException) {
+      throw new MojoExecutionException(ioException);
     }
-    project.addTestCompileSourceRoot(directory.getAbsolutePath());
+
+    project.addTestCompileSourceRoot(path.toAbsolutePath().toString());
   }
 
   public void setProject (MavenProject project) {
@@ -39,12 +49,12 @@ public class AddTestCompileSourceRootMojo extends AbstractMojo {
     this.project = project;
   }
 
-  public void setOutputDirectory (File outputDirectory) {
+  public void setOutputDirectory (String outputDirectory) {
 
     this.outputDirectory = outputDirectory;
   }
 
-  public void setTestOutputDirectory (File testOutputDirectory) {
+  public void setTestOutputDirectory (String testOutputDirectory) {
 
     this.testOutputDirectory = testOutputDirectory;
   }

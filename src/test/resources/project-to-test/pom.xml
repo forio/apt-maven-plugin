@@ -20,6 +20,7 @@
         <version>1.1.4</version>
         <executions>
           <execution>
+            <id>jpa</id>
             <goals>
               <goal>process</goal>
             </goals>
@@ -29,7 +30,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>test-sources</id>
+            <id>test-jpa</id>
             <phase>generate-test-sources</phase>
             <goals>
               <goal>test-process</goal>
