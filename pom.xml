@@ -45,6 +45,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.10.1</version>
         <configuration>
           <source>17</source>
           <target>17</target>
@@ -72,7 +73,7 @@
   </scm>
 
   <properties>
-    <maven.version>3.8.3</maven.version>
+    <maven.version>3.8.5</maven.version>
     <maven.plugin.annotations.version>3.6.1</maven.plugin.annotations.version>
     <querydsl.version>5.0.0</querydsl.version>
   </properties>
